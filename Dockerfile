@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y sudo \
     && apt-get install -y psmisc \
     && apt-get install -y apt-transport-https \
     && apt-get install -y supervisor \
-    && apt-get install lsb \
+    && apt-get install -y lsb \
     && echo "postfix postfix/mailname string root" | debconf-set-selections \
     && echo "postfix postfix/main_mailer_type string No configuration" | debconf-set-selections \
     && apt-get install -y postfix mailutils libsasl2-2 libsasl2-modules \
