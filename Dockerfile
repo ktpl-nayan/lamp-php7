@@ -2,6 +2,8 @@ from ubuntu:16.04
 
 MAINTAINER Nayan V. <nayanvanza91@gmail.com>
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update && apt-get install -y sudo \
     && apt-get install -y vim \
     && apt-get install -y rsyslog \
@@ -16,6 +18,7 @@ RUN apt-get update && apt-get install -y sudo \
     && apt-get install -y psmisc \
     && apt-get install -y apt-transport-https \
     && apt-get install -y supervisor \
+    && apt-get install lsb \
     && echo "postfix postfix/mailname string root" | debconf-set-selections \
     && echo "postfix postfix/main_mailer_type string No configuration" | debconf-set-selections \
     && apt-get install -y postfix mailutils libsasl2-2 libsasl2-modules \
@@ -34,13 +37,14 @@ RUN apt-get update && apt-get install -y sudo \
     && cd /etc/apache2/conf-available \
     && printf "<Directory "/phpmyadmin">\nAllowOverride all\nRequire all granted\n</Directory>\nAlias /phpmyadmin /phpmyadmin" > phpmyadmin.conf \
     && a2enconf phpmyadmin.conf \
+    && apt-get install -y debconf-utils \
     && cd /tmp/ \
-#    && wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb \
-#    && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb \
-#    && apt-get -y update \
-#    && echo "percona-server-server-5.6 percona-server-server/root_password password secret" | debconf-set-selections \
-#    && echo "percona-server-server-5.6 percona-server-server/root_password_again password secret" | debconf-set-selections \
-#    && apt-get -y install percona-server-server-5.6 percona-server-client-5.6 \
+    && wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb \
+    && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb \
+    && apt-get -y update \
+    && echo "percona-server-server-5.7 percona-server-server/root_password password secret" | debconf-set-selections \
+    && echo "percona-server-server-5.7 percona-server-server/root_password_again password secret" | debconf-set-selections \
+    && apt-get -y install percona-server-server-5.7 percona-server-client-5.7 \
     && add-apt-repository ppa:ondrej/php \
     && apt-get update \
     && apt-get install -y libapache2-mod-php7.0 php7.0 php7.0-mysql \
@@ -61,16 +65,30 @@ RUN apt-get update && apt-get install -y sudo \
     && apt-get update \
     && apt-get install -y varnish \
     && apt-get install -y redis-server \
-    && apt-get install -y vsftpd 
+    && apt-get install -y vsftpd \
+    && apt-get -y update \
+    && curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer \
+    && chmod +x /usr/local/bin/composer \
+    && curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
+    && apt-get install -y nodejs 
+#    && cd / \
+#    && wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb \
+#    && dpkg -i erlang-solutions_1.0_all.deb \
+#    && apt-get -y update \
+#    && echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list \
+#    && wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add - \
+#    && apt-get -y update \
+#    && apt-get install -y rabbitmq-server
 
-#ADD tools/docker/apache2/ports.conf /etc/apache2/ports.conf
-#ADD tools/docker/apache2/apache2.conf /etc/apache2/apache2.conf
-#ADD tools/docker/apache2/envvars /etc/apache2/envvars
-#ADD tools/docker/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
-#ADD tools/docker/php7/apache2/php.ini /etc/php/7.0/apache2/php.ini
-#ADD tools/docker/php7/cli/php.ini /etc/php/7.0/cli/php.ini
-#ADD tools/docker/phpmyadmin/config.inc.php /phpmyadmin/config.inc.php
-#ADD tools/docker/postfix/main.cf /etc/postfix/main.cf
+ADD tools/docker/apache2/ports.conf /etc/apache2/ports.conf
+ADD tools/docker/apache2/apache2.conf /etc/apache2/apache2.conf
+ADD tools/docker/apache2/envvars /etc/apache2/envvars
+ADD tools/docker/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD tools/docker/php7/apache2/php.ini /etc/php/7.0/apache2/php.ini
+ADD tools/docker/php7/cli/php.ini /etc/php/7.0/cli/php.ini
+ADD tools/docker/phpmyadmin/config.inc.php /phpmyadmin/config.inc.php
+ADD tools/docker/postfix/main.cf /etc/postfix/main.cf
 
 ADD tools/docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 ADD tools/docker/supervisor/conf.d/apps.conf /etc/supervisor/conf.d/apps.conf
