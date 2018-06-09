@@ -71,7 +71,8 @@ RUN apt-get update && apt-get install -y sudo \
     && mv composer.phar /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     && curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
-    && apt-get install -y nodejs 
+    && apt-get install -y nodejs \
+    && npm install -g grunt-cli
 #    && cd / \
 #    && wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb \
 #    && dpkg -i erlang-solutions_1.0_all.deb \
@@ -81,14 +82,14 @@ RUN apt-get update && apt-get install -y sudo \
 #    && apt-get -y update \
 #    && apt-get install -y rabbitmq-server
 
-#ADD tools/docker/apache2/ports.conf /etc/apache2/ports.conf
-#ADD tools/docker/apache2/apache2.conf /etc/apache2/apache2.conf
-#ADD tools/docker/apache2/envvars /etc/apache2/envvars
-#ADD tools/docker/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
-#ADD tools/docker/php7/apache2/php.ini /etc/php/7.0/apache2/php.ini
-#ADD tools/docker/php7/cli/php.ini /etc/php/7.0/cli/php.ini
-#ADD tools/docker/phpmyadmin/config.inc.php /phpmyadmin/config.inc.php
-#ADD tools/docker/postfix/main.cf /etc/postfix/main.cf
+ADD tools/docker/apache2/ports.conf /etc/apache2/ports.conf
+ADD tools/docker/apache2/apache2.conf /etc/apache2/apache2.conf
+ADD tools/docker/apache2/envvars /etc/apache2/envvars
+ADD tools/docker/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD tools/docker/php7/apache2/php.ini /etc/php/7.0/apache2/php.ini
+ADD tools/docker/php7/cli/php.ini /etc/php/7.0/cli/php.ini
+ADD tools/docker/phpmyadmin/config.inc.php /phpmyadmin/config.inc.php
+ADD tools/docker/postfix/main.cf /etc/postfix/main.cf
 
 ADD tools/docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 ADD tools/docker/supervisor/conf.d/apps.conf /etc/supervisor/conf.d/apps.conf

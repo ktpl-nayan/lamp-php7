@@ -9,6 +9,7 @@ if [ ! -f docker_initialized ]; then
         usermod -p $(echo $root_password | openssl passwd -1 -stdin) root
 	chown -R $dev_user: $dev_user_dir
 	usermod -a -G adm $dev_user
+	usermod -a -G www-data $dev_user
         touch docker_initialized
 fi
 exec "$@"
