@@ -5,4 +5,4 @@ Docker based solution - Full featured ready Development Stack for developers to 
 This docker solution is best suitable to run Magento 2 projects.
 
 # Commnad to Launch Container.
-docker run -i -t -d --name web-server -e project_name=latest -e pma_user=pma -e dev_user=magento -e dev_password=magento123 -e root_password =root123 ktpl00/lamp-php7
+docker run -i -t -d --name web-server -e project_name=latest -e pma_user=pma -e dev_user=magento -e dev_password=magento123 -e root_password=root123 ktpl00/lamp-php7
