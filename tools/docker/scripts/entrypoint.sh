@@ -10,6 +10,7 @@ if [ ! -f docker_initialized ]; then
 	chown -R $dev_user: /var/www/html
 	usermod -a -G adm $dev_user
 	usermod -a -G www-data $dev_user
+	mysql -u root -e \ "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';"
         touch docker_initialized
 fi
 exec "$@"
