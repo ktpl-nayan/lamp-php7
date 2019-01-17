@@ -1,6 +1,6 @@
 from ubuntu:16.04
 
-MAINTAINER Nayan V. <nayanvanza91@gmail.com>
+MAINTAINER Nayan V. <nayan@krishtechnolabs.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
